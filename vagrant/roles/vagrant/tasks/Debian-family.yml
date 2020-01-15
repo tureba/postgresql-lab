@@ -1,0 +1,13 @@
+---
+
+- name: instala avahi-daemon
+  become: true
+  apt:
+    name: avahi-daemon
+    state: latest
+
+- name: atualiza todos os pacotes
+  become: true
+  apt:
+    upgrade: dist
+
