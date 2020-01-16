@@ -55,3 +55,4 @@
       Host {{ ansible_hostname }} {{ ansible_hostname }}.local
       Hostname {{ ip|default(ansible_host) }}
       User root
+      StrictHostKeyChecking accept-new
