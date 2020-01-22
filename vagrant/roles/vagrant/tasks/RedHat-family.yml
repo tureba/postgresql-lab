@@ -1,38 +1,32 @@
 ---
 
 - name: instala EPEL
-  become: true
   yum:
     name: epel-release
     state: latest
 
 - name: instala avahi
-  become: true
   yum:
     name: avahi
     state: latest
 
 - name: instala nss-mdns
-  become: true
   yum:
     name: nss-mdns
     state: latest
 
 - name: inicia avahi-daemon
-  become: true
   service:
     name: avahi-daemon
     state: started
     # o serviço já vem habilitado
 
 - name: atualiza todos os pacotes
-  become: true
   yum:
     name: '*'
     state: latest
 
 - name: desabilita selinux
-  become: true
   lineinfile:
     dest: /etc/selinux/config
     regexp: '^SELINUX='
