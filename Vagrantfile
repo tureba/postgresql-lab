@@ -52,6 +52,11 @@ Vagrant.configure("2") do |config|
         ansible.playbook = "vagrant/vagrant.yml"
         ansible.host_vars = { hostname => {"ip" => maquina["ansible_host"]} }
       end
+      if Vagrant.has_plugin?("vagrant-reload")
+        config.vm.provision :reload
+      else
+        config.vm.provision "shell", inline: "echo $(tput blink)$(tput bold)Execute agora \'vagrant reload\' para aplicar algumas configurações de provisionamento"
+      end
     end
   end
 end
