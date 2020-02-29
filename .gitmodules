@@ -1,3 +1,3 @@
 [submodule "vagrant"]
 	path = vagrant
-	url = git@github.com:tureba/ansible-playbook-vagrant-vm.git
+	url = https://github.com/tureba/ansible-playbook-vagrant-vm.git
