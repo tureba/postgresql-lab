@@ -38,6 +38,10 @@ Vagrant.configure("2") do |config|
       config.vm.network "private_network", ip: maquina["ansible_host"], auto_config: true
 
       config.vm.provider "virtualbox" do |virtualbox|
+        virtualbox.name = hostname
+        # agrupa as VMs deste laboratório
+        virtualbox.customize ["modifyvm", :id, "--groups", "/" + (maquina["grupo"] || File.basename(File.dirname(__FILE__)))]
+
         virtualbox.cpus = maquina["cpus"] || 1
         virtualbox.memory = maquina["memoria"] || 512
 

@@ -7,6 +7,7 @@ all:
 #     cpus: 1                    # opcional
 #     memoria: 512               # opcional
 #     box: centos/7              # opcional
+#     grupo: laboratorio         # opcional
     pg-a:
       ansible_host: 192.168.56.20
       ansible_user: root
