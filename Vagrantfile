@@ -50,6 +50,9 @@ Vagrant.configure("2") do |config|
 
         # desabilita audio
         virtualbox.customize ["modifyvm", :id, "--audio", "none"]
+
+        # desabilita saida de console para log
+        virtualbox.customize ["modifyvm", :id, "--uartmode1", "disconnected"]
       end
 
       config.vm.provision "ansible" do |ansible|
