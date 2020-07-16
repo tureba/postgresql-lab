@@ -29,7 +29,7 @@ Vagrant.configure("2") do |config|
   inventario["all"]["hosts"].each do |hostname, maquina|
     config.vm.define hostname do |config|
       config.vm.hostname = hostname
-      config.vm.box = maquina["box"] || 'centos/7'
+      config.vm.box = maquina["box"] || 'centos/8'
 
       # sshfs quando possivel, rsync caso contrario. evita nfs
       config.vm.synced_folder ".", "/vagrant", type: s_f_type, disabled: true
