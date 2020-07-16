@@ -30,6 +30,7 @@ Vagrant.configure("2") do |config|
     config.vm.define hostname do |config|
       config.vm.hostname = hostname
       config.vm.box = maquina["box"] || 'centos/8'
+      grupo = maquina["grupo"] || File.basename(File.dirname(__FILE__))
 
       # sshfs quando possivel, rsync caso contrario. evita nfs
       config.vm.synced_folder ".", "/vagrant", type: s_f_type, disabled: true
@@ -40,7 +41,7 @@ Vagrant.configure("2") do |config|
       config.vm.provider "virtualbox" do |virtualbox|
         virtualbox.name = hostname
         # agrupa as VMs deste laboratório
-        virtualbox.customize ["modifyvm", :id, "--groups", "/" + (maquina["grupo"] || File.basename(File.dirname(__FILE__)))]
+        virtualbox.customize ["modifyvm", :id, "--groups", "/" + grupo]
 
         virtualbox.cpus = maquina["cpus"] || 1
         virtualbox.memory = maquina["memoria"] || 512
@@ -57,7 +58,7 @@ Vagrant.configure("2") do |config|
 
       config.vm.provision "ansible" do |ansible|
         ansible.playbook = "vagrant/vagrant.yml"
-        ansible.host_vars = { hostname => {"ip" => maquina["ansible_host"]} }
+        ansible.host_vars = { hostname => {"ip" => maquina["ansible_host"], "grupo" => grupo} }
       end
       if Vagrant.has_plugin?("vagrant-reload")
         config.vm.provision :reload
