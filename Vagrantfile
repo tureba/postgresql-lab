@@ -68,6 +68,7 @@ Vagrant.configure("2") do |config|
       config.vm.provision "ansible" do |ansible|
         ansible.playbook = "vagrant/vagrant.yml"
         ansible.host_vars = { hostname => {"ip" => maquina["ansible_host"], "grupo" => grupo} }
+        ansible.skip_tags = ["upgrade"]
       end
       if Vagrant.has_plugin?("vagrant-reload")
         config.vm.provision :reload
