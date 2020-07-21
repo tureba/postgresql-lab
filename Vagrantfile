@@ -49,11 +49,20 @@ Vagrant.configure("2") do |config|
         # usa tipo ideal de nic
         virtualbox.default_nic_type = "virtio"
 
+        # usa controlador de video recomendado
+        virtualbox.customize ["modifyvm", :id, "--graphicscontroller", "vmsvga"]
+
         # desabilita audio
         virtualbox.customize ["modifyvm", :id, "--audio", "none"]
 
         # desabilita saida de console para log
+        virtualbox.customize ["modifyvm", :id, "--uart1", "off"]
         virtualbox.customize ["modifyvm", :id, "--uartmode1", "disconnected"]
+
+        # desabilita dispositivos USB
+        virtualbox.customize ["modifyvm", :id, "--usbohci", "off"]
+        virtualbox.customize ["modifyvm", :id, "--usbehci", "off"]
+        virtualbox.customize ["modifyvm", :id, "--usbxhci", "off"]
       end
 
       config.vm.provision "ansible" do |ansible|
