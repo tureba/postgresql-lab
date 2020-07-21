@@ -51,6 +51,7 @@ Vagrant.configure("2") do |config|
 
         # usa controlador de video recomendado
         virtualbox.customize ["modifyvm", :id, "--graphicscontroller", "vmsvga"]
+        virtualbox.customize ["modifyvm", :id, "--vram", "16"]
 
         # desabilita audio
         virtualbox.customize ["modifyvm", :id, "--audio", "none"]
