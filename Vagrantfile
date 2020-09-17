@@ -72,10 +72,11 @@ Vagrant.configure("2") do |config|
         ansible.host_vars = { hostname => {"ip" => maquina["ansible_host"], "grupo" => grupo} }
         ansible.skip_tags = ["upgrade"]
       end
+
       if Vagrant.has_plugin?("vagrant-reload")
         config.vm.provision :reload
       else
-        config.vm.provision "shell", inline: "echo $(tput blink)$(tput bold)Execute agora \'vagrant reload\' para aplicar algumas configurações de provisionamento"
+        config.vm.provision "shell", inline: "echo $(tput blink)$(tput bold)Execute agora \'vagrant reload\' para aplicar algumas configurações de provisionamento$(tput sgr0)"
       end
     end
   end
