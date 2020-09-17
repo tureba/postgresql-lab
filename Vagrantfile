@@ -6,10 +6,6 @@
 require 'yaml'
 inventario = YAML.load_file("inventario.yml")
 
-# não uso shared folders do VirtualBox porque causam problemas demais
-# se o sshfs estiver disponível, use ele; caso contrário, use rsync
-s_f_type = Vagrant.has_plugin?("vagrant-sshfs") ? "sshfs" : "rsync"
-
 Vagrant.configure("2") do |config|
 
   if Vagrant.has_plugin?("vagrant-vbguest")
@@ -32,8 +28,8 @@ Vagrant.configure("2") do |config|
       config.vm.box = maquina["box"] || 'centos/8'
       grupo = maquina["grupo"] || File.basename(File.dirname(__FILE__))
 
-      # sshfs quando possivel, rsync caso contrario. evita nfs
-      config.vm.synced_folder ".", "/vagrant", type: s_f_type, disabled: true
+      # desabilita o diretório compartilhado, evitando requisitos extras e problemas
+      config.vm.synced_folder ".", "/vagrant", disabled: true
 
       # rede host-only padrão do virtualbox: 192.168.56.0/24
       config.vm.network "private_network", ip: maquina["ansible_host"], auto_config: true
