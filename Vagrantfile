@@ -62,6 +62,11 @@ Vagrant.configure("2") do |config|
         virtualbox.customize ["modifyvm", :id, "--usbxhci", "off"]
       end
 
+      config.vm.provider "libvirt" do |libvirt|
+        libvirt.cpus = maquina["cpus"] || 1
+        libvirt.memory = maquina["memoria"] || 512
+      end
+
       config.vm.provision "ansible" do |ansible|
         ansible.playbook = "vagrant/vagrant.yml"
         ansible.host_vars = { hostname => {"ip" => maquina["ansible_host"], "grupo" => grupo} }
