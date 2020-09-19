@@ -25,7 +25,8 @@ Vagrant.configure("2") do |config|
   inventario["all"]["hosts"].each do |hostname, maquina|
     config.vm.define hostname do |config|
       config.vm.hostname = hostname
-      config.vm.box = maquina["box"] || 'centos/8'
+      config.vm.box = maquina["box"] || "tureba/postgresql-lab"
+
       grupo = maquina["grupo"] || File.basename(File.dirname(__FILE__))
 
       # desabilita o diretório compartilhado, evitando requisitos extras e problemas
@@ -67,16 +68,9 @@ Vagrant.configure("2") do |config|
         libvirt.memory = maquina["memoria"] || 512
       end
 
-      config.vm.provision "ansible" do |ansible|
+      config.vm.provision "local", type: "ansible", run: "never" do |ansible|
         ansible.playbook = "vagrant/vagrant.yml"
         ansible.host_vars = { hostname => {"ip" => maquina["ansible_host"], "grupo" => grupo} }
-        ansible.skip_tags = ["upgrade"]
-      end
-
-      if Vagrant.has_plugin?("vagrant-reload")
-        config.vm.provision :reload
-      else
-        config.vm.provision "shell", inline: "echo $(tput blink)$(tput bold)Execute agora \'vagrant reload\' para aplicar algumas configurações de provisionamento$(tput sgr0)"
       end
     end
   end
