@@ -1,0 +1,26 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  maquinas = {
+    "pg-a" => "192.168.56.20",
+    "pg-1" => "192.168.56.30",
+    "pg-2" => "192.168.56.40"
+    }
+  maquinas.each do |hostname, ip|
+    config.vm.define hostname do |maquina|
+      maquina.vm.hostname = hostname
+      maquina.vm.box = "tureba/postgresql-lab"
+      maquina.vm.synced_folder ".", "/vagrant", disabled: true
+
+      # rede host-only padrão do virtualbox: 192.168.56.0/24
+      maquina.vm.network "private_network", ip: ip, auto_config: true
+
+      maquina.vm.provider "virtualbox" do |virtualbox|
+        virtualbox.name = hostname
+        # agrupa as VMs deste laboratório
+        virtualbox.customize ["modifyvm", :id, "--groups", "/postgresql-lab"]
+      end
+    end
+  end
+end

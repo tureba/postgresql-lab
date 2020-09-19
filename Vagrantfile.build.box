@@ -1,0 +1,45 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Baseado em: https://github.com/hashicorp/packer/blob/master/builder/vagrant/step_create_vagrantfile.go#L25
+
+Vagrant.configure("2") do |config|
+  config.vm.define "source", autostart: false do |source|
+    source.vm.box = "{{.SourceBox}}"
+    config.ssh.insert_key = {{.InsertKey}}
+  end
+  config.vm.define "output" do |output|
+    output.vm.box = "{{.BoxName}}"
+    output.vm.box_url = "file://package.box"
+    config.ssh.insert_key = {{.InsertKey}}
+  end
+  {{ if ne .SyncedFolder "" -}}
+    config.vm.synced_folder "{{.SyncedFolder}}", "/vagrant"
+  {{- else -}}
+    config.vm.synced_folder ".", "/vagrant", disabled: true
+  {{- end}}
+
+  config.vm.provider "virtualbox" do |virtualbox|
+    virtualbox.cpus = 1
+    virtualbox.memory = 512
+
+    # usa tipo ideal de nic
+    virtualbox.default_nic_type = "virtio"
+
+    # usa controlador de video recomendado
+    virtualbox.customize ["modifyvm", :id, "--graphicscontroller", "vmsvga"]
+    virtualbox.customize ["modifyvm", :id, "--vram", "16"]
+
+    # desabilita audio
+    virtualbox.customize ["modifyvm", :id, "--audio", "none"]
+
+    # desabilita saida de console para log
+    virtualbox.customize ["modifyvm", :id, "--uart1", "off"]
+    virtualbox.customize ["modifyvm", :id, "--uartmode1", "disconnected"]
+
+    # desabilita dispositivos USB
+    virtualbox.customize ["modifyvm", :id, "--usbohci", "off"]
+    virtualbox.customize ["modifyvm", :id, "--usbehci", "off"]
+    virtualbox.customize ["modifyvm", :id, "--usbxhci", "off"]
+  end
+end

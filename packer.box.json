@@ -1,0 +1,35 @@
+{
+  "variables": {
+    "version":              "1",
+    "cloud_token":          "{{ env `VAGRANT_CLOUD_TOKEN` }}",
+    "cloud_tag":            "tureba/postgresql-lab"
+  },
+  "builders": [
+    {
+      "name":               "box1",
+      "communicator":       "ssh",
+      "source_path":        "centos/8",
+      "provider":           "virtualbox",
+      "type":               "vagrant",
+      "template":           "Vagrantfile.build.box",
+      "output_vagrantfile": "Vagrantfile.cloud"
+    }
+  ],
+  "provisioners": [
+    {
+      "type":               "ansible",
+      "playbook_file":      "./vagrant/packer.yml",
+      "extra_arguments":    [ "--skip-tags", "upgrade" ]
+    }
+  ],
+  "post-processors": [
+    [
+      {
+        "type":             "vagrant-cloud",
+        "box_tag":          "{{user `cloud_tag`}}",
+        "access_token":     "{{user `cloud_token`}}",
+        "version":          "{{user `version`}}"
+      }
+    ]
+  ]
+}
