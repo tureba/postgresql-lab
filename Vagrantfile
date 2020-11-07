@@ -5,6 +5,7 @@
 # das especificações
 require 'yaml'
 inventario = YAML.load_file("inventario.yml")
+prebuiltbox = "tureba/postgresql-lab"
 
 Vagrant.configure("2") do |config|
 
@@ -25,7 +26,7 @@ Vagrant.configure("2") do |config|
   inventario["all"]["hosts"].each do |hostname, maquina|
     config.vm.define hostname do |config|
       config.vm.hostname = hostname
-      config.vm.box = maquina["box"] || "tureba/postgresql-lab"
+      config.vm.box = maquina["box"] || prebuiltbox
 
       grupo = maquina["grupo"] || File.basename(File.dirname(__FILE__))
 
@@ -66,6 +67,11 @@ Vagrant.configure("2") do |config|
       config.vm.provider "libvirt" do |libvirt|
         libvirt.cpus = maquina["cpus"] || 1
         libvirt.memory = maquina["memoria"] || 512
+      end
+
+      config.vm.provision "packer", type: "ansible", run: ((config.vm.box == prebuiltbox) ? "never" : "once") do |ansible|
+        ansible.playbook = "vagrant/packer.yml"
+        ansible.host_vars = { hostname => {"ip" => maquina["ansible_host"], "grupo" => grupo} }
       end
 
       config.vm.provision "local", type: "ansible", run: "never" do |ansible|
