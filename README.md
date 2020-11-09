@@ -11,13 +11,20 @@ adaptado para outros propósitos.
 * [Vagrant](https://www.vagrantup.com)
 * [VirtualBox](https://www.virtualbox.org)
 
+### Preparação
+
+Faça o download do `Vagrantfile` e do `inventario.yml` em um diretório
+vazio.
+
 ### Como instanciar o laboratório
+
+Dentro do diretório que contém o `Vagrantfile`, execute:
 
 * vagrant up
 
 ### Como acessar as máquinas virtuais
 
-As três VMs podem ser acessadas com:
+As três VMs podem ser acessadas do diretório que contém o `Vagrantfile` com:
 
 * vagrant ssh pg-a
 * vagrant ssh pg-1
@@ -37,6 +44,12 @@ Ou, com usuário e senha _vagrant_:
 * [VirtualBox](https://www.virtualbox.org)
 * [Packer](https://packer.io)
 * [Ansible](https://www.ansible.com)
+* [git](https://git-scm.com)
+
+### Preparação
+
+Clone este repositório incluindo seus submódulos (`git clone
+--recurse-submodules`).
 
 ### Como atualizar a box
 
@@ -48,3 +61,7 @@ Ou, com usuário e senha _vagrant_:
 * vagrant halt
 * VBoxManage export pg-a pg-1 pg-2 --ovf20 -o postgresql-lab.ova
 * vagrant destroy
+
+### Como instanciar o laboratório em sala de aula
+
+* vagrant up --provision-with local
