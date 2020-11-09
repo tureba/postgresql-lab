@@ -4,16 +4,18 @@ O propósito deste repositório é criar um conjunto de VMs para serem usadas co
 laboratório de testes e aulas sobre PostgreSQL. Mas ele pode ser facilmente
 adaptado para outros propósitos.
 
-## Requisitos
+## Para o aluno
 
-* Vagrant
-* VirtualBox
+### Requisitos
 
-## Como instanciar o laboratório
+* [Vagrant](https://www.vagrantup.com)
+* [VirtualBox](https://www.virtualbox.org)
+
+### Como instanciar o laboratório
 
 * vagrant up
 
-## Como acessar
+### Como acessar as máquinas virtuais
 
 As três VMs podem ser acessadas com:
 
@@ -27,11 +29,20 @@ Ou, com usuário e senha _vagrant_:
 * ssh -l vagrant 192.168.56.30
 * ssh -l vagrant 192.168.56.40
 
-## Como atualizar a box
+## Para o instrutor
+
+### Requisitos
+
+* [Vagrant](https://www.vagrantup.com)
+* [VirtualBox](https://www.virtualbox.org)
+* [Packer](https://packer.io)
+* [Ansible](https://www.ansible.com)
+
+### Como atualizar a box
 
 * packer build packer.box.json
 
-## Como atualizar a ova
+### Como atualizar a ova
 
 * vagrant up
 * vagrant halt
